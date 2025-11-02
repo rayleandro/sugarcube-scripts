@@ -284,7 +284,7 @@ function argparse(raw, details, defaultParam) {
 }
 
 /* EXPORTS */
-const UTILS = 'io_utils';
+const UTILS = 'IoUtils';
 
 if (! (UTILS in setup)) {
   setup[UTILS] = {};
