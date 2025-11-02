@@ -1,4 +1,5 @@
 /* This is a heavily modified fork/rip off of Chapel's Message Macro v.1.0.1.
+https://twinelab.net/custom-macros-for-sugarcube-2/#/
 
 Usage:
 
