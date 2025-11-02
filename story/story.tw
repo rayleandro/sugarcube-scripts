@@ -15,7 +15,12 @@ Testing Io's Sugarcube Scripts
 Config.passages.nobr = true;
 Template.add('p', '<br><br>');
 
+:: PassageFooter
+<div id='twink'></div>
+
 :: Start
+<<include [[Twink]]>>
+
 <<fork>>
   <<opt link= 'Message'>><<goto [[Message]]>>
   <<opt link= 'Saying'>><<goto [[Saying]]>>
@@ -23,10 +28,23 @@ Template.add('p', '<br><br>');
   <<opt link= 'Argparse'>><<goto [[Argparse]]>>
 <</fork>>
 
+:: Twink
+Twine + Ink = Twink. ?p
+
+<<run setup.Twink.Scroll.unfurl("HELLO THERE!!!!")>>
+
+<<node JimLooking>>
+  Jim is looking straight at you. ?p
+
+  Yeah he's just obsessed like crazy. Haha!!
+<</node>>
+
+<<go JimLooking>>
+
 :: Argparse
 Argparse is a utility function for parsing macro arguments. ?p
 
-<<set _argparse to setup.io_utils.argparse >>
+<<set _argparse to setup.IoUtils.argparse >>
 <<set _details to {
   link: {
     type: "tws",
