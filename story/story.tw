@@ -17,11 +17,47 @@ Template.add('p', '<br><br>');
 
 :: Start
 <<include [[Message]] 'div'>>
+<<include [[Saying]] 'div'>>
+<<include [[Forks]] 'div'>>
 
+:: Forks
+
+<h1>Fork macro</h1>
+
+<<fork>>
+  <<opt link='Click me!'>> Hi there!
+  <<opt link='Yeah, put it right there!' ex=false>> That feels really good...
+<</fork>>
 
 :: Message
+
+<h1>Message macro</h1>
+(heavily modified from Chapel's message macro) [[https://twinelab.net/custom-macros-for-sugarcube-2/#/]] ?p
+
 Reprehenderit aliquip fugiat aute <<message 'cupidatat'>> Did you ever like me?<</message>> qui reprehenderit ut dolor qui. 
 Enim voluptate do duis ipsum ullamco sunt aliqua cupidatat sit consequat amet. 
 Laboris <<message 'reprehenderit'>> Was I stupid?<<note>> Was I dumb?<<note>> What did you really want?<</message>> sint enim sint incididunt do culpa. 
 Tempor eiusmod sint officia velit <<message 'voluptate.'>><div>deserunt veniam incididunt.</div><</message>>
 Aliqua dolore officia proident dolore reprehenderit ut irure Lorem veniam in.
+
+:: Saying
+
+<h1>Says macro</h1>
+
+<<says "Io">>
+  Hello!
+<<say "Leo">>
+  Back at ya!
+<</says>>
+
+Some narration between the two dialogues. Don't write line breaks for this one. Est do irure occaecat pariatur aute cillum excepteur.
+
+<<says "Io">>
+  This say box isn't connected to the other one.
+<</says>>
+
+<<says "Leo">>
+  Yeah, it's not. ?p
+
+  And I'm saying one last thing! I think it looks decent on mobile!
+<</says>>
