@@ -13,6 +13,8 @@ Param names are [A-z0-9_].
 - TODO less stupid error messages
 */
 
+(() => {
+
 /* Constants */
 const DEFAULT = '_default';
 const TYPE_RAW = 'raw';
@@ -235,7 +237,7 @@ function evaluate(parsedRecord, defaultParam, details) {
 function argparse(raw, defaultParam, details) {
 
   /* validate function params */
-  const details = validDetails(details);
+  const validDetails = validDetails(details);
 
   if (defaultParam.match(RE_PARAM) === null) {
     throw new Error(`invalid param name ${defaultParam}`);
@@ -258,4 +260,7 @@ const UTILS = 'io_utils';
 if (! (UTILS in setup)) {
   setup[UTILS] = {};
 }
-/* setup[UTILS][ARGPARSE] = argparse; */
+
+setup[UTILS].argparse = argparse;
+
+})();
