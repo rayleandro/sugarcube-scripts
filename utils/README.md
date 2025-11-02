@@ -1,4 +1,2 @@
 # utils
-These are not self-contained macros!
-
-Currently "exported" under setup.IoUtils.[utilityFunctionName]
+These are not self-contained macros! Currently "exported" under setup.IoUtils.[utilityFunctionName]. These should probably be copy-pasted before everything else, or in tweego, should come first in the sources list.
