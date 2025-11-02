@@ -1,0 +1,6 @@
+sugarcube-2:
+  macros:
+    says:
+      container: true
+    say:
+      parent: says

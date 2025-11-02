@@ -1,0 +1,10 @@
+sugarcube-2:
+  macros:
+    fork: 
+      container: true
+    opt: 
+      parent: [fork, ul, ol]
+    ul:
+      container: true
+    ol:
+      container: true

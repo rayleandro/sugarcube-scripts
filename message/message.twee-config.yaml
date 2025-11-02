@@ -1,0 +1,6 @@
+sugarcube-2:
+  macros:
+    message:
+      container: true
+    note:
+      parent: message
