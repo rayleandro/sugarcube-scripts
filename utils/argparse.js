@@ -28,12 +28,12 @@ const TYPES = [
   TYPE_FLAG
 ];
 
-const RE_PARAM = /^[A-z0-9_]+$/;
+const RE_PARAM = /^[A-z0-9_-]+$/;
 
 function parse(rawString, allowDefault=false) {
 
   /* Matches all sequences of `param1= value`, incl. `flag1=`, and default_arg */
-  const reMatch = /(?:(?:([A-z0-9_]+=)(.*?))|(^.*?))(?=[A-z0-9_]+=|$)/g;
+  const reMatch = /(?:(?:([A-z0-9_-]+=)(.*?))|(^.*?))(?=[A-z0-9_-]+=|$)/g;
 
   const record = {};
 
