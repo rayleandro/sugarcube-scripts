@@ -16,9 +16,61 @@ Config.passages.nobr = true;
 Template.add('p', '<br><br>');
 
 :: Start
-<<include [[Message]] 'div'>>
-<<include [[Saying]] 'div'>>
-<<include [[Forks]] 'div'>>
+<<fork>>
+  <<opt link= 'Message'>><<goto [[Message]]>>
+  <<opt link= 'Saying'>><<goto [[Saying]]>>
+  <<opt link= 'Forks'>><<goto [[Forks]]>>
+  <<opt link= 'Argparse'>><<goto [[Argparse]]>>
+<</fork>>
+
+:: Argparse
+Argparse is a utility function for parsing macro arguments. ?p
+
+<<set _argparse to setup.io_utils.argparse >>
+<<set _details to {
+  link: {
+    type: "tws",
+  },
+  shown: {
+    type: "tws",
+  },
+  ex: {
+    type: "flag",
+    default: true
+  }
+}>>
+<<set $apples to 4 >>
+
+""""shit" link= "Label that overrides 'shit'." shown= $apples is 2""" ?p
+
+<<= JSON.stringify(
+   _argparse(
+    `"shit" link= "Label that overrides 'shit'." shown= $apples is 2`,
+    _details,
+    'link'
+  )
+)>> ?p
+
+""""shit" shown= $apples is 2""" ?p
+
+<<= JSON.stringify(
+   _argparse(
+    `"shit" shown= $apples is 2`,
+    _details,
+    'link'
+  )
+)>> ?p
+
+""""shit" shown= $apples is 2 ex= false""" ?p
+
+<<= JSON.stringify(
+   _argparse(
+    `"shit" shown= $apples is 2 ex= false`,
+    _details,
+    'link'
+  )
+)>> ?p
+
 
 :: Forks
 
