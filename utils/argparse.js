@@ -24,12 +24,13 @@ const TYPE_FLAG = 'flag';
 const TYPES = [
   TYPE_RAW,
   TYPE_TWINE,
-  TYPE_LINK
+  TYPE_LINK,
+  TYPE_FLAG
 ];
 
 const RE_PARAM = /^[A-z0-9_]+$/;
 
-function parse(rawString) {
+function parse(rawString, allowDefault=false) {
 
   /* Matches all sequences of `param1= value`, incl. `flag1=`, and default_arg */
   const reMatch = /(?:(?:([A-z0-9_]+=)(.*?))|(^.*?))(?=[A-z0-9_]+=|$)/g;
@@ -48,8 +49,12 @@ function parse(rawString) {
 
     /* Handling default argument at the start */
     if (match[3] !== undefined) {
-      record[DEFAULT] = match[3];
-      continue;
+      if (allowDefault) {
+        record[DEFAULT] = match[3];
+        continue;
+      } else {
+        throw new Error("malformed arg at the start");
+      }
     }
 
     /* Validate param */
@@ -95,7 +100,7 @@ function validDetails(details) {
     if (type !== undefined) {
 
       if (! (TYPES.includes(type))) {
-        throw new Error("invalid type in details object");
+        throw new Error(`invalid type ${type} in details object`);
       }
       
       goodType = type;
@@ -157,26 +162,37 @@ function evalFlag(string) {
       /* writing `flag1=` signifies flag's presence */
       return true;
     case 'true':
-    case true:
       return true;
     case 'false':
-    case false:
       return false;
     default:
       throw new Error(`${string} invalid arg for a flag param`);
   }
 }
 
+function emptyOrDefault(arg, def) {
+  if (arg === '') {
+    if (def !== undefined) {
+      return def;
+    } else {
+      throw new Error(`invalid arg: empty`);
+    }
+  } else {
+    return arg;
+  }
+}
+
 function evalArg(rawArg, detail) {
   const arg = rawArg.trim();
 
+
   switch (detail.type) {
     case TYPE_TWINE:
-      const tws = arg ? arg !== '' : detail.default;
+      const tws = emptyOrDefault(arg, detail.default);
       return evalTwine(tws);
     
     case TYPE_LINK:
-      const link = arg ? arg !== '' : detail.default;
+      const link = emptyOrDefault(arg, detail.default);
       return evalLink(link);
 
     case TYPE_FLAG:
@@ -191,7 +207,7 @@ function evalArg(rawArg, detail) {
   }
 }
 
-function evaluate(parsedRecord, defaultParam, details) {
+function evaluate(parsedRecord, details, defaultParam) {
 
   const ret = {};
 
@@ -202,19 +218,23 @@ function evaluate(parsedRecord, defaultParam, details) {
   )
 
   /* handle the default arg by evaluating it based on defaultParam */
-  if (DEFAULT in parsedRecord) {
+  if (defaultParam !== undefined && DEFAULT in parsedRecord) {
     ret[defaultParam] = evalArg(parsedRecord[DEFAULT], details[defaultParam]);
+    paramsEvaled[defaultParam] = true;
   }
 
   /* looping thru parsedRecord, evaluate each arg based on details */
   for (const [param, value] of Object.entries(parsedRecord)) {
+    
     /* yes this will override the default arg haha that's intentional because LTR */
-
-    /* error if param not in details */
-    if (! (param in details)) {
-      throw new Error(`invalid param ${param}`);
+    if (param === DEFAULT) {
+      continue;
     }
 
+    /* error if param not in details */
+    if (! (param in details) ) {
+      throw new Error(`invalid param ${param}`);
+    }
     ret[param] = evalArg(value, details[param]);
     paramsEvaled[param] = true;
   }
@@ -224,7 +244,7 @@ function evaluate(parsedRecord, defaultParam, details) {
     
     /* if default exists, use it. else, error */
     if ('default' in details[param]) {
-      ret[param] = evalArg(parsedRecord[param]);
+      ret[param] = details[param].default;
     } else {
       throw new Error(`no param ${param}`)
     }
@@ -234,23 +254,32 @@ function evaluate(parsedRecord, defaultParam, details) {
 
 }
 
-function argparse(raw, defaultParam, details) {
+function argparse(raw, details, defaultParam) {
 
   /* validate function params */
-  const validDetails = validDetails(details);
+  const valid = validDetails(details);
 
-  if (defaultParam.match(RE_PARAM) === null) {
-    throw new Error(`invalid param name ${defaultParam}`);
-  } 
+  if (defaultParam !== undefined) {
+    if (defaultParam.match(RE_PARAM) === null) {
+      throw new Error(`invalid param name ${defaultParam}`);
+    } 
 
-  if (! (defaultParam in details)) {
-    throw new Error(`default param name ${defaultParam} not in passed details object`);
+    if (! (defaultParam in details)) {
+      throw new Error(`default param name ${defaultParam} not in passed details object`);
+    }
+  }
+
+  if (! typeof details === 'object') {
+    throw new Error("bad/no details param");
   }
 
   return evaluate(
-    parse(raw),
-    defaultParam,
-    details
+    parse(
+      raw,
+      defaultParam !== undefined
+    ),
+    details,
+    defaultParam
   );
 }
 
