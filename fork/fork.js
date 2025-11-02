@@ -79,7 +79,6 @@ Macro.add(['fork', 'ul', 'ol'], {
   handler() {
     /* parse fork args */
     const forkArgs = argparse(this.args.raw);
-    console.log(this.name);
 
     /* what tag? */
     const tag = 'tag' in forkArgs ? 
@@ -136,8 +135,6 @@ Macro.add(['fork', 'ul', 'ol'], {
           if ($message.text().trim() !== '') {
             $message.insertBefore($list);
           }
-
-          console.log(`ex: ${optArgs.ex} and ${'ex' in optArgs}`);
 
           /* unless ex is false, kill list element by default */
           /* else, kill li itself, unless sticky (untested)*/
