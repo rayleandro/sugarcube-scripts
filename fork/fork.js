@@ -18,7 +18,8 @@
 This is mostly only useful for easier formatting or slightly easier conditional options.
 */
 
-const Fork = setup.Fork =  {
+(() => {
+const Fork = {
   forkWriteClass: 'fork-written',
   forkClass: 'fork',
   forkChildTags: ['option', 'opt', 'o'],
@@ -163,3 +164,9 @@ Macro.add(['fork', 'ul', 'ol'], {
       .append($list);
   }
 });
+
+/* EXPORTS */
+
+setup.Fork = Fork;
+
+})();

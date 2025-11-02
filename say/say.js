@@ -15,6 +15,7 @@
 Using the <<says>> macro with child tags make consecutive sayboxes look vertically combined, i.e.
 without margins between them.
 */
+(() => {
 
 function makeSay (name, text) {
   let $box = $('<div class="sayBox"></div>');
@@ -40,3 +41,5 @@ Macro.add('says', {
     $output.append($wrapper);
   }
 })
+
+})();

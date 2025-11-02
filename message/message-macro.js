@@ -11,6 +11,8 @@ Changes to Chapel's Message Macro:
 3. Allows for multiple messages with the same link text.
 */
 
+(() => {
+
 Macro.add('message', {
     tags    : ['note'],
     handler : function () {
@@ -44,3 +46,5 @@ Macro.add('message', {
             .appendTo(this.output);
     }
 });
+
+})();
