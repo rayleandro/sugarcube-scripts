@@ -1,0 +1,27 @@
+:: StoryTitle
+Scripts Tester
+
+:: StorySubtitle
+Testing Io's Sugarcube Scripts
+
+:: StoryData
+{
+  "ifid": "565F17A9-B3DD-4EC8-AC57-5E13640A42BB",
+  "format": "SugarCube",
+  "format-version": "2.37.3"
+}
+
+:: StoryInit [script]
+Config.passages.nobr = true;
+Template.add('p', '<br><br>');
+
+:: Start
+<<include [[Message]] 'div'>>
+
+
+:: Message
+Reprehenderit aliquip fugiat aute <<message 'cupidatat'>> Did you ever like me?<</message>> qui reprehenderit ut dolor qui. 
+Enim voluptate do duis ipsum ullamco sunt aliqua cupidatat sit consequat amet. 
+Laboris <<message 'reprehenderit'>> Was I stupid?<<note>> Was I dumb?<<note>> What did you really want?<</message>> sint enim sint incididunt do culpa. 
+Tempor eiusmod sint officia velit <<message 'voluptate.'>><div>deserunt veniam incididunt.</div><</message>>
+Aliqua dolore officia proident dolore reprehenderit ut irure Lorem veniam in.
