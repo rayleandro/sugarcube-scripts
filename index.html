@@ -351,6 +351,9 @@ html[data-debug-view] .debug.hidden .debug {
 }
 /* twine-user-stylesheet #5: "twink.css" */
 .twink-in {
+  opacity: 0;
+}
+.twink-t8n {
   /* i'm copying sc source w this */
   transition: opacity 400ms ease-in;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "argparse.js" */
@@ -971,6 +974,7 @@ setup.Fork = Fork;
           .addClass([
             'twink-scroll-entry',
             'twink-in',
+            'twink-t8n',
           ])
           .append($frag);
         this.$buffer.append($scrollEntry);
@@ -982,6 +986,11 @@ setup.Fork = Fork;
 
     popScrollBuffer() {
       $scroll.append(this.$buffer);
+
+      setTimeout(() => $scroll.children('.twink-in')
+          .removeClass('twink-in'), 
+        Engine.DOM_DELAY / 2
+      );
 
       /* empty the buffer */
       this.$buffer = $(document.createDocumentFragment());
@@ -1241,7 +1250,9 @@ setup.Fork = Fork;
 
       for (const choice of this.choices()) {
         if (choice.isOpen()) {
-          const $li = $(document.createElement('li'));
+          const $li = $(document.createElement('li'))
+            .addClass('twink-in')
+            .addClass('twink-t8n');
           const $link = $(document.createElement('a'))
             .attr('role', 'button')
             .wiki(choice.label)
@@ -1259,8 +1270,14 @@ setup.Fork = Fork;
             })
             .appendTo($li);
           $li.appendTo($list);
+
         }
       }
+
+      setTimeout(() => $list.children('.twink-in')
+          .removeClass('twink-in'), 
+        Engine.DOM_DELAY / 2
+      );
 
       if ($list.contents().length > 0) {
         $menu.empty();
@@ -1292,6 +1309,10 @@ setup.Fork = Fork;
 
     /* clean up choice register */
     Choices.register = new Map();
+
+    /* clean up choice menu */
+
+    Choices.setMenu([]);
   });
 
   /* called during 
@@ -1353,7 +1374,7 @@ Template.add('p', '<br><br>');</script><tw-passagedata pid="1" name="StorySubtit
   null,
   &quot;Click me!&quot;,
   {
-    /* sticky: true,  */
+    sticky: true, 
     node: setup.Twink.Nodes.addNode(
       null,
       &quot;This is what happens when you click me, baby...&quot;,

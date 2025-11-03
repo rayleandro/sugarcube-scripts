@@ -52,6 +52,7 @@
           .addClass([
             'twink-scroll-entry',
             'twink-in',
+            'twink-t8n',
           ])
           .append($frag);
         this.$buffer.append($scrollEntry);
@@ -63,6 +64,11 @@
 
     popScrollBuffer() {
       $scroll.append(this.$buffer);
+
+      setTimeout(() => $scroll.children('.twink-in')
+          .removeClass('twink-in'), 
+        Engine.DOM_DELAY / 2
+      );
 
       /* empty the buffer */
       this.$buffer = $(document.createDocumentFragment());
@@ -322,7 +328,9 @@
 
       for (const choice of this.choices()) {
         if (choice.isOpen()) {
-          const $li = $(document.createElement('li'));
+          const $li = $(document.createElement('li'))
+            .addClass('twink-in')
+            .addClass('twink-t8n');
           const $link = $(document.createElement('a'))
             .attr('role', 'button')
             .wiki(choice.label)
@@ -340,8 +348,14 @@
             })
             .appendTo($li);
           $li.appendTo($list);
+
         }
       }
+
+      setTimeout(() => $list.children('.twink-in')
+          .removeClass('twink-in'), 
+        Engine.DOM_DELAY / 2
+      );
 
       if ($list.contents().length > 0) {
         $menu.empty();
@@ -373,6 +387,10 @@
 
     /* clean up choice register */
     Choices.register = new Map();
+
+    /* clean up choice menu */
+
+    Choices.setMenu([]);
   });
 
   /* called during 

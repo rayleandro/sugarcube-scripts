@@ -1,4 +1,7 @@
 .twink-in {
+  opacity: 0;
+}
+.twink-t8n {
   /* i'm copying sc source w this */
   transition: opacity 400ms ease-in;
 }
